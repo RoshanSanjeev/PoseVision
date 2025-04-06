@@ -14,6 +14,7 @@
   <div class="container py-5">
     <h1 class="fw-bold mb-4 text-center">Processed Squatting Video</h1>
 
+    <!-- Video Player -->
     <div class="video-section mb-4 text-center">
       <video id="video-player" controls style="max-width: 100%; height: auto;">
         <source src="{{ url_for('static', filename='processed/' + filename) }}" type="video/mp4" />
@@ -21,7 +22,8 @@
       </video>
     </div>
 
-    <div class="feedback-section mb-4">
+    <!-- Form Feedback Section -->
+    <div class="feedback-section mb-5">
       <h2>Form Feedback</h2>
       <div id="feedback-list">
         {% if feedback %}
@@ -33,7 +35,8 @@
                 {% else %}
                   Between {{ "%.2f"|format(item.start) }}s and {{ "%.2f"|format(item.end) }}s:
                 {% endif %}
-              </strong> {{ item.feedback }}
+              </strong>
+              Squat appeared uneven.
             </div>
           {% endfor %}
         {% else %}
@@ -42,11 +45,37 @@
       </div>
     </div>
 
+    <!-- General Recommendation Section -->
+    {% if feedback %}
+    <div class="recommendation-section bg-light p-4 border rounded shadow-sm mb-4">
+      <h4 class="fw-bold mb-3">Recommendation</h4>
+      <p>
+        Uneven squats often result from muscular imbalances, poor hip mobility, or tightness in the inner thighs and hamstrings. These imbalances can cause one side of your body to take over, which leads to form breakdown, reduced strength gains, or even injury.
+      </p>
+      <p>
+        We recommend incorporating <strong>Cossack squats</strong> into your routine. This is a deep lateral squat that builds unilateral strength and mobility by targeting:
+      </p>
+      <ul>
+        <li>Adductors (inner thigh)</li>
+        <li>Glutes and hamstrings</li>
+        <li>Ankle and hip mobility</li>
+      </ul>
+      <p>
+        Begin with bodyweight Cossack squats or use a light kettlebell for support. Aim for 2–3 sets of 8–10 reps per side, 2–3x per week. Focus on depth, control, and keeping your heel grounded.
+      </p>
+      <p class="fw-bold">
+        Strengthening these areas will lead to more balanced and powerful bilateral squats.
+      </p>
+    </div>
+    {% endif %}
+
+    <!-- Upload Again Button -->
     <div class="text-center">
       <a href="{{ url_for('index') }}" class="btn btn-secondary">Upload another video</a>
     </div>
   </div>
 
+  <!-- Footer -->
   <footer class="footer mt-auto py-3 bg-dark text-white text-center">
     <div class="container">
       <span>&copy; 2025 PoseVision. All rights reserved.</span>
