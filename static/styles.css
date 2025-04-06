@@ -1,72 +1,83 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body styling */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+/* Container */
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Heading */
 h1 {
-    text-align: center;
-    margin-bottom: 20px;
+  color: #333;
+  font-size: 28px;
+  margin-bottom: 24px;
 }
 
-.upload-label {
-    display: block;
-    margin-bottom: 10px;
-    font-size: 16px;
+/* Label */
+label {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  color: #444;
 }
 
-#video-upload {
-    margin-bottom: 10px;
+/* File input */
+input[type="file"] {
+  border: 2px dashed #cccccc;
+  padding: 20px;
+  width: 100%;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: border-color 0.3s ease;
 }
 
+input[type="file"]:hover {
+  border-color: #4CAF50;
+}
+
+/* Submit button */
 .upload-btn {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .upload-btn:hover {
-    background-color: #45a049;
-}
-
-.video-section {
-    text-align: center;
-}
-
-#video-player {
-    width: 100%;
-    max-width: 100%;
-    display: block;
-    margin: 0 auto;
-}
-
-.feedback-section {
-    margin-top: 20px;
-}
-
-#feedback-list {
-    list-style-type: none;
-    padding: 0;
-}
-
-.feedback-item {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin-bottom: 5px;
-    border-radius: 4px;
+  background-color: #45a049;
 }
 
