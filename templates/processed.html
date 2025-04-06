@@ -1,16 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Processed Video</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processed Video</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-  <h1>Your Processed Video</h1>
-  <video width="640" height="480" controls>
-    <source src="{{ video_url }}" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
+    <div class="container">
+        <h1>Processed Squatting Video</h1>
+
+        <div class="video-section">
+            <video id="video-player" controls>
+                <source src="{{ url_for('static', filename='processed/' + filename) }}" type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <div class="feedback-section">
+            <h2>Feedback</h2>
+            <div id="feedback-list">
+                {% for item in feedback %}
+                    <div class="feedback-item">
+                        <strong>At {{ item.timestamp }} seconds:</strong> {{ item.feedback }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <a href="{{ url_for('upload') }}">Upload another video</a>
+    </div>
 </body>
 </html>
+
