@@ -4,32 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Processed Video</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
-<body>
-    <div class="container">
-        <h1>Processed Squatting Video</h1>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+        <a class="navbar-brand" href="#">PoseVision</a>
+    </nav>
 
-        <div class="video-section">
-            <video id="video-player" controls>
+    <div class="container py-5">
+        <h1 class="fw-bold mb-4 text-center">Processed Squatting Video</h1>
+
+        <div class="video-section mb-4 text-center">
+            <video id="video-player" controls style="max-width: 100%; height: auto;">
                 <source src="{{ url_for('static', filename='processed/' + filename) }}" type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
         </div>
 
-        <div class="feedback-section">
+        <div class="feedback-section mb-4">
             <h2>Feedback</h2>
             <div id="feedback-list">
                 {% for item in feedback %}
-                    <div class="feedback-item">
+                    <div class="alert alert-info">
                         <strong>At {{ item.timestamp }} seconds:</strong> {{ item.feedback }}
                     </div>
                 {% endfor %}
             </div>
         </div>
 
-        <a href="{{ url_for('upload') }}">Upload another video</a>
+        <div class="text-center">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">Upload another video</a>
+        </div>
     </div>
+
+    <footer class="footer mt-auto py-3 bg-dark text-white text-center">
+        <div class="container">
+            <span>&copy; 2025 PoseVision. All rights reserved.</span>
+        </div>
+    </footer>
 </body>
 </html>
-
