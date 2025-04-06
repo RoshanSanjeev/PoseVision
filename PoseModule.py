@@ -21,10 +21,7 @@ class poseDetector:
         )
         self.mp_drawing = mp.solutions.drawing_utils
         self.drawing_spec_connections = self.mp_drawing.DrawingSpec(
-            color=(0, 255, 0),
-            thickness=2,
-            circle_radius=2
-        )
+            color=(0, 255, 0), thickness=2, circle_radius=2)
 
     def findPose(self, frame, draw=True):
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -67,8 +64,7 @@ def fix_video_with_ffmpeg(input_path, output_path):
     print("🔧 Fixing video container with ffmpeg...")
     fixed_path = output_path.replace(".mp4", "_fixed.mp4")
     cmd = [
-        "ffmpeg",
-        "-y",
+        "ffmpeg", "-y",
         "-i", output_path,
         "-c:v", "libx264",
         "-preset", "fast",
@@ -80,27 +76,26 @@ def fix_video_with_ffmpeg(input_path, output_path):
     print("✅ Video container fixed!")
 
 def process_video(input_path, output_path):
-    print(f"▶️ Starting pose processing on: {input_path}")
     cap = cv2.VideoCapture(input_path)
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     out = None
     detector = poseDetector()
     pTime = 0
     frame_count = 0
+    feedback_times = []
 
     while cap.isOpened():
         success, frame = cap.read()
         if not success or frame is None:
-            print("❌ No more frames or frame is None. Ending...")
             break
 
         frame, result = detector.findPose(frame)
         lmList = detector.getPosition(frame)
-        drawing_spec_connections = None
+        left_angle = right_angle = None
+        current_time = frame_count / 24.0  # assuming 24 FPS
 
         if lmList:
             lmDict = {id: (x, y) for id, x, y in lmList}
-            left_angle = right_angle = None
 
             if all(k in lmDict for k in [23, 25, 27]):
                 left_angle = detector.getAngle(lmDict[23], lmDict[25], lmDict[27])
@@ -113,19 +108,19 @@ def process_video(input_path, output_path):
                             cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 255), 2)
 
             if left_angle is not None and right_angle is not None:
-                drawing_spec_connections = detector.mp_drawing.DrawingSpec(
-                    color=(0, 255, 0) if abs(left_angle - right_angle) < 5 else (0, 0, 255),
-                    thickness=2, circle_radius=2
-                )
+                diff = abs(left_angle - right_angle)
+                if diff >= 5:
+                    detector.drawing_spec_connections = detector.mp_drawing.DrawingSpec(color=(0, 0, 255), thickness=2, circle_radius=2)
+                    feedback_times.append(round(current_time, 2))
+                else:
+                    detector.drawing_spec_connections = detector.mp_drawing.DrawingSpec(color=(0, 255, 0), thickness=2, circle_radius=2)
+
                 detector.mp_drawing.draw_landmarks(
                     frame,
                     result.pose_landmarks,
                     detector.mp_pose.POSE_CONNECTIONS,
-                    connection_drawing_spec=drawing_spec_connections
+                    connection_drawing_spec=detector.drawing_spec_connections
                 )
-
-        cv2.putText(frame, "Processed", (10, 100),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 3)
 
         cTime = time.time()
         fps = 1 / (cTime - pTime) if (cTime - pTime) > 0 else 0
@@ -145,3 +140,28 @@ def process_video(input_path, output_path):
     if out:
         out.release()
         fix_video_with_ffmpeg(input_path, output_path)
+
+    # Group close feedback times into ranges
+    grouped_feedback = []
+    if feedback_times:
+        start = feedback_times[0]
+        end = start
+        for i in range(1, len(feedback_times)):
+            current = feedback_times[i]
+            if current - end <= 1.0:
+                end = current
+            else:
+                grouped_feedback.append({
+                    "start": round(start, 2),
+                    "end": round(end, 2),
+                    "feedback": "Squat appears uneven. Try incorporating Cossack squats with or without a kettlebell to improve flexibility and unilateral strength."
+                })
+                start = current
+                end = current
+        grouped_feedback.append({
+            "start": round(start, 2),
+            "end": round(end, 2),
+            "feedback": "Squat appears uneven. Try incorporating Cossack squats with or without a kettlebell to improve flexibility and unilateral strength."
+        })
+
+    return grouped_feedback
