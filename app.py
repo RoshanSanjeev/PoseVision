@@ -9,7 +9,6 @@ PROCESSED_FOLDER = 'static/processed'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['PROCESSED_FOLDER'] = PROCESSED_FOLDER
 
-# Ensure folders exist
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(PROCESSED_FOLDER, exist_ok=True)
 
@@ -28,11 +27,9 @@ def upload_video():
     processed_path = os.path.join(app.config['PROCESSED_FOLDER'], filename)
 
     video.save(upload_path)
+    feedback = process_video(upload_path, processed_path)
 
-    # Run pose detection
-    process_video(upload_path, processed_path)
-
-    return render_template('processed.html', filename=filename, feedback=[])
+    return render_template('processed.html', filename=filename, feedback=feedback)
 
 if __name__ == '__main__':
     app.run(debug=True)
