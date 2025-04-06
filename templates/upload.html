@@ -1,13 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Upload Video</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Squatting Video</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-  <h1>Upload Your Video</h1>
-  <form action="/upload" method="post" enctype="multipart/form-data">
-    <input type="file" name="video" accept="video/*" required><br><br>
-    <input type="submit" value="Upload and Process">
-  </form>
+    <div class="container">
+        <h1>Upload Squatting Video</h1>
+
+        <form action="{{ url_for('handle_upload') }}" method="POST" enctype="multipart/form-data">
+            <label for="video-upload" class="upload-label">Select a video:</label>
+            <input type="file" id="video-upload" name="video" accept="video/*" required />
+            <button type="submit" class="upload-btn">Upload</button>
+        </form>
+    </div>
 </body>
 </html>
+
