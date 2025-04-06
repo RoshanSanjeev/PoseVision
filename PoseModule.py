@@ -29,7 +29,6 @@ class poseDetector:
     def findPose(self, frame, draw=True):
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         self.result = self.pose.process(frame_rgb)
-
         if self.result.pose_landmarks and draw:
             self.mp_drawing.draw_landmarks(
                 frame,
@@ -83,7 +82,7 @@ def fix_video_with_ffmpeg(input_path, output_path):
 def process_video(input_path, output_path):
     print(f"▶️ Starting pose processing on: {input_path}")
     cap = cv2.VideoCapture(input_path)
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Use 'avc1' or 'H264' if needed
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     out = None
     detector = poseDetector()
     pTime = 0
@@ -114,11 +113,10 @@ def process_video(input_path, output_path):
                             cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 255), 2)
 
             if left_angle is not None and right_angle is not None:
-                if abs(left_angle - right_angle) < 5:
-                    drawing_spec_connections = detector.mp_drawing.DrawingSpec(color=(0, 255, 0), thickness=2, circle_radius=2)
-                else:
-                    drawing_spec_connections = detector.mp_drawing.DrawingSpec(color=(0, 0, 255), thickness=2, circle_radius=2)
-
+                drawing_spec_connections = detector.mp_drawing.DrawingSpec(
+                    color=(0, 255, 0) if abs(left_angle - right_angle) < 5 else (0, 0, 255),
+                    thickness=2, circle_radius=2
+                )
                 detector.mp_drawing.draw_landmarks(
                     frame,
                     result.pose_landmarks,
@@ -126,7 +124,6 @@ def process_video(input_path, output_path):
                     connection_drawing_spec=drawing_spec_connections
                 )
 
-        # Visual indicators
         cv2.putText(frame, "Processed", (10, 100),
                     cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 3)
 
@@ -139,18 +136,12 @@ def process_video(input_path, output_path):
 
         if out is None:
             height, width = frame.shape[:2]
-            print(f"🎬 Creating writer: {output_path} — {width}x{height}")
             out = cv2.VideoWriter(output_path, fourcc, 24.0, (width, height))
 
         out.write(frame)
         frame_count += 1
-        if frame_count % 30 == 0:
-            print(f"📽 Processed {frame_count} frames...")
 
     cap.release()
     if out:
         out.release()
-        print(f"✅ Done! Output saved to: {output_path}")
         fix_video_with_ffmpeg(input_path, output_path)
-    else:
-        print("⚠️ No output written. Check if video source is readable.")
