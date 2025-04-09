@@ -109,7 +109,7 @@ def process_video(input_path, output_path):
 
             if left_angle is not None and right_angle is not None:
                 diff = abs(left_angle - right_angle)
-                if diff >= 5:
+                if diff >= 4.5:
                     detector.drawing_spec_connections = detector.mp_drawing.DrawingSpec(color=(0, 0, 255), thickness=2, circle_radius=2)
                     feedback_times.append(round(current_time, 2))
                 else:
