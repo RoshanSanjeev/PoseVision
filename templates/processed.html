@@ -1,13 +1,137 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Processed Video</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      background: linear-gradient(to right, #1e1b4b, #312e81);
+      color: white;
+    }
+
+    .card-content {
+      background-color: #ffffff;
+      color: #1f2937;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    .video-wrapper {
+      background-color: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .alert-warning {
+      background-color: #fff7ed;
+      border-color: #f97316;
+      color: #7c2d12;
+    }
+
+    .btn-secondary {
+      background-color: #f97316;
+      border: none;
+    }
+
+    .btn-secondary:hover {
+      background-color: #ea580c;
+    }
+
+    .footer {
+      font-size: 0.9rem;
+      background-color: #1e1b4b;
+    }
+  </style>
 </head>
 <body>
-  <h1>Your Processed Video</h1>
-  <video width="640" height="480" controls>
-    <source src="{{ video_url }}" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark px-4" style="background-color: #111827;">
+    <a class="navbar-brand fs-4 fw-bold" href="#">PoseVision</a>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container py-5">
+    <div class="card-content">
+      <h1 class="fw-bold mb-4 text-center">Processed Squatting Video</h1>
+
+      <!-- Video Section (fixed) -->
+      <div class="video-wrapper">
+        <video controls>
+          <source src="{{ url_for('static', filename='processed/' + filename) }}" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <!-- Feedback Section -->
+      <div class="feedback-section mb-5">
+        <h4 class="fw-bold">Form Feedback</h4>
+        <div id="feedback-list">
+          {% if feedback %}
+            {% for item in feedback %}
+              <div class="alert alert-warning">
+                <strong>
+                  {% if item.start == item.end %}
+                    At {{ "%.2f"|format(item.start) }}s:
+                  {% else %}
+                    Between {{ "%.2f"|format(item.start) }}s and {{ "%.2f"|format(item.end) }}s:
+                  {% endif %}
+                </strong> Squat appeared uneven.
+              </div>
+            {% endfor %}
+          {% else %}
+            <p class="text-muted">Great job! No major form issues detected.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Recommendation Section -->
+      {% if feedback %}
+      <div class="recommendation-section mt-4">
+        <h4 class="fw-bold mb-3">Recommendation</h4>
+        <p>
+          Uneven squats often result from muscular imbalances, poor hip mobility, or tightness in the inner thighs and hamstrings. These imbalances can cause one side of your body to take over, which leads to form breakdown, reduced strength gains, or even injury.
+        </p>
+        <p>
+          We recommend incorporating <strong>Cossack squats</strong> into your routine. This deep lateral squat builds unilateral strength and mobility by targeting:
+        </p>
+        <ul>
+          <li>Adductors (inner thigh)</li>
+          <li>Glutes and hamstrings</li>
+          <li>Ankle and hip mobility</li>
+        </ul>
+        <p>
+          Start with bodyweight Cossack squats or use a kettlebell for support. Do 2–3 sets of 8–10 reps per side, 2–3x per week. Focus on depth, control, and keeping your heel grounded.
+        </p>
+        <p class="fw-bold">
+          Strengthening these areas will help correct imbalance and improve overall squat performance.
+        </p>
+      </div>
+      {% endif %}
+
+      <!-- Upload Again -->
+      <div class="text-center mt-4">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary btn-lg">Upload Another Video</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer py-3 text-white text-center mt-5">
+    <div class="container">
+      <span>&copy; 2025 PoseVision. Powered by AI. Built for performance.</span>
+    </div>
+  </footer>
 </body>
 </html>
