@@ -1,38 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Upload Your Workout</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PoseVision – Analyze Your Squat Form</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      background: linear-gradient(to right, #1e1b4b, #312e81); /* deep indigo tones */
+      color: white;
+    }
+
+    #loading-spinner {
+      display: none;
+    }
+
+    .hero {
+      padding-top: 3rem;
+      padding-bottom: 2rem;
+    }
+
+    .hero h1 {
+      font-size: 2.75rem;
+      font-weight: 700;
+      color: #fbbf24; /* amber-400 */
+    }
+
+    .hero .lead {
+      font-size: 1.25rem;
+      color: #dbeafe;
+    }
+
+    .hero p.text-muted {
+      color: #c7d2fe;
+    }
+
+    .card-upload {
+      max-width: 550px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      color: #1f2937;
+    }
+
+    .footer {
+      font-size: 0.9rem;
+      background-color: #1e1b4b;
+    }
+
+    .btn-primary {
+      background-color: #f97316; /* orange-500 */
+      border-color: #f97316;
+    }
+
+    .btn-primary:hover {
+      background-color: #ea580c; /* orange-600 */
+      border-color: #ea580c;
+    }
+  </style>
 </head>
-<body class="bg-light">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
-    <a class="navbar-brand" href="#">PoseVision</a>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark px-4" style="background-color: #111827;">
+    <a class="navbar-brand fs-4 fw-bold" href="#">PoseVision</a>
   </nav>
 
-  <div class="container py-5">
-    <div class="text-center mb-4">
-      <h1 class="fw-bold">Upload Your Workout</h1>
-      <p class="text-muted">Get real-time form analysis with MediaPipe Pose Detection</p>
-    </div>
-    <div class="card shadow-lg p-4">
-      <form action="{{ url_for('upload_video') }}" method="post" enctype="multipart/form-data">
+  <!-- Hero Section -->
+  <div class="container hero text-center">
+    <h1>AI-Powered Squat Feedback</h1>
+    <p class="lead mb-3">
+      Upload a video. Get real-time insights. Improve your form with expert-level feedback — powered by pose detection AI.
+    </p>
+    <p class="text-muted">
+      We’ll highlight imbalances and offer corrective exercises like <strong>Cossack squats</strong> to help you move stronger and smarter.
+    </p>
+  </div>
+
+  <!-- Upload Card -->
+  <div class="container mb-5">
+    <div class="card shadow-lg p-4 card-upload">
+      <h5 class="text-center mb-4 fw-semibold">Upload Your Squat Video</h5>
+      <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
         <div class="mb-3">
           <input type="file" name="video" accept="video/*" class="form-control" required>
         </div>
         <div class="d-grid">
-          <input type="submit" value="Upload and Process" class="btn btn-primary btn-lg">
+          <input type="submit" value="Analyze My Squat" class="btn btn-primary btn-lg">
         </div>
       </form>
+
+      <!-- Loading Spinner -->
+      <div id="loading-spinner" class="text-center mt-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Processing...</span>
+        </div>
+        <p class="mt-2 fw-medium text-dark">Analyzing your squat... hang tight!</p>
+      </div>
     </div>
   </div>
 
-  <footer class="footer mt-auto py-3 bg-dark text-white text-center">
+  <!-- Footer -->
+  <footer class="footer py-3 text-white text-center">
     <div class="container">
-      <span>&copy; 2025 PoseVision. All rights reserved.</span>
+      <span>&copy; 2025 PoseVision. Powered by AI. Built for performance.</span>
     </div>
   </footer>
+
+  <!-- Script: Show spinner on form submit -->
+  <script>
+    document.getElementById('upload-form').addEventListener('submit', function () {
+      document.getElementById('loading-spinner').style.display = 'block';
+    });
+  </script>
 </body>
 </html>
