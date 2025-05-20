@@ -1,5 +1,4 @@
-Video Demo:[https://youtube.com/shorts/O5sprqx_5Xk?feature=share](https://studio.youtube.com/video/O5sprqx_5Xk/edit)
-
+Video Demo: https://www.youtube.com/shorts/O5sprqx_5Xk
 
 #PoseVision
 What it does:
