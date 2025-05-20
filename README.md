@@ -1,3 +1,4 @@
+Video Demo: https://youtube.com/shorts/mvC3062sz64?feature=share
 #PoseVision
 What it does:
 This project analyzes squat videos to detect imbalances in knee angles, which can indicate potential issues with form. When the angles of the knees are different, the system highlights this in real-time, drawing attention to areas that may lead to injury. By providing clear visual feedback, it helps users identify posture concerns and improve their squatting technique.
