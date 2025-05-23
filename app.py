@@ -32,4 +32,5 @@ def upload_video():
     return render_template('processed.html', filename=filename, feedback=feedback)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
+
